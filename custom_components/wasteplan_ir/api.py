@@ -34,7 +34,6 @@ class WasteplanIRApiClient:
 
     async def async_get_pickups(self) -> any:
         """Get pickup base data from IR."""
-        LOGGER.info(self._address)
         return await self._api_wrapper(
             method="get",
             url="https://innherredrenovasjon.no/wp-json/ir/v1/garbage-disposal-dates-by-address?address="
