@@ -53,24 +53,26 @@ class WasteplanIRCalendar(WasteplanIREntity, CalendarEntity):
         events: list[CalendarEvent] = []
         waste_summary = None
         waste_pickup = None
-        for waste in self.coordinator.data["calendar"]:
-            waste_date = datetime.strptime(waste["dato"], "%Y-%m-%dT%H:%M:%S").replace(
-                hour=8
-            )
-            waste_pickup = dt.as_local(waste_date)
-            waste_summary = waste["fraksjon"]
 
-            event = CalendarEvent(
-                summary=waste_summary,
-                start=waste_pickup,
-                end=waste_pickup + timedelta(hours=8),
-            )
+        for fraction_id, fraction_details in self.coordinator.data.items():
+            for date in fraction_details["dates"]:
+                waste_date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S").replace(
+                    hour=8
+                )
+                waste_pickup = dt.as_local(waste_date)
+                waste_summary = fraction_details["fraction_name"]
 
-            if (
-                start_date.date() <= waste_date.date() <= end_date.date()
-                and event is not None
-            ):
-                events.append(event)
+                event = CalendarEvent(
+                    summary=waste_summary,
+                    start=waste_pickup,
+                    end=waste_pickup + timedelta(hours=8),
+                )
+
+                if (
+                    start_date.date() <= waste_date.date() <= end_date.date()
+                    and event is not None
+                ):
+                    events.append(event)
 
         return events
 
