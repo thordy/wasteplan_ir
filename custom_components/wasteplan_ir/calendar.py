@@ -50,6 +50,7 @@ class WasteplanIRCalendar(WasteplanIREntity, CalendarEntity):
 
     async def async_get_events(
         self,
+        _: HomeAssistant,
         start_date: datetime,
         end_date: datetime,
     ) -> list[CalendarEvent]:

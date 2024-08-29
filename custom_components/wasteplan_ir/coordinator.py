@@ -36,7 +36,7 @@ class WasteplanIRDataUpdateCoordinator(DataUpdateCoordinator):
             hass=hass,
             logger=LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(hours=5),
+            update_interval=timedelta(hours=24),
         )
         self.entities: list[WasteplanIREntity] = []
 
