@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.data_entry_flow import FlowResult
 
-from .const import DOMAIN, CALENDAR_NAME, LOCATION_NAME, LOGGER
+from .const import CALENDAR_NAME, DOMAIN, LOCATION_NAME
+
+if TYPE_CHECKING:
+    from homeassistant.data_entry_flow import FlowResult
 
 
 class WasteplanIRFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):

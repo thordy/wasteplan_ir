@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.device_registry import DeviceEntryType
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
@@ -15,7 +14,11 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .api import WasteplanIRApiClient, WasteplanIRApiClientError
-from .const import DOMAIN, LOGGER, LOCATION_NAME
+from .const import DOMAIN, LOCATION_NAME, LOGGER
+
+if TYPE_CHECKING:
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
 
 
 # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
@@ -37,7 +40,7 @@ class WasteplanIRDataUpdateCoordinator(DataUpdateCoordinator):
         )
         self.entities: list[WasteplanIREntity] = []
 
-    async def _async_update_data(self):
+    async def _async_update_data(self) -> any:
         """Update data via library."""
         try:
             return await self.client.async_get_pickups()

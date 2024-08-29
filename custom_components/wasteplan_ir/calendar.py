@@ -1,17 +1,22 @@
 """Support for Wasteplan IR calendar."""
 
 from __future__ import annotations
-from datetime import datetime, timedelta
-from homeassistant.util import dt
+
+from datetime import UTC, datetime, timedelta
+from typing import TYPE_CHECKING
 
 from homeassistant.components.calendar import CalendarEntity, CalendarEvent
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.core import callback
+from homeassistant.util import dt
 
+from .const import CALENDAR_NAME, DOMAIN, LOCATION_NAME
 from .coordinator import WasteplanIREntity
-from .const import DOMAIN, LOCATION_NAME, CALENDAR_NAME, LOGGER
+
+if TYPE_CHECKING:
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
+    from homeassistant.helpers.entity_platform import AddEntitiesCallback
+    from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 
 async def async_setup_entry(
@@ -45,7 +50,6 @@ class WasteplanIRCalendar(WasteplanIREntity, CalendarEntity):
 
     async def async_get_events(
         self,
-        hass: HomeAssistant,
         start_date: datetime,
         end_date: datetime,
     ) -> list[CalendarEvent]:
@@ -54,10 +58,10 @@ class WasteplanIRCalendar(WasteplanIREntity, CalendarEntity):
         waste_summary = None
         waste_pickup = None
 
-        for fraction_id, fraction_details in self.coordinator.data.items():
+        for fraction_details in self.coordinator.data.values():
             for date in fraction_details["dates"]:
                 waste_date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S").replace(
-                    hour=8
+                    hour=8, tzinfo=UTC
                 )
                 waste_pickup = dt.as_local(waste_date)
                 waste_summary = fraction_details["fraction_name"]
@@ -81,10 +85,10 @@ class WasteplanIRCalendar(WasteplanIREntity, CalendarEntity):
         """Handle updated data from the coordinator."""
         next_waste_summary = None
         next_waste_pickup = None
-        for fraction_id, fraction_details in self.coordinator.data.items():
+        for fraction_details in self.coordinator.data.values():
             for date in fraction_details["dates"]:
                 waste_date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S").replace(
-                    hour=8
+                    hour=8, tzinfo=UTC
                 )
 
                 if (

@@ -8,8 +8,6 @@ from typing import Any
 import aiohttp
 import async_timeout
 
-from .const import LOGGER
-
 
 class WasteplanIRApiClientError(Exception):
     """Exception to indicate a general API error."""
@@ -22,13 +20,14 @@ class WasteplanIRApiClientCommunicationError(
 
 
 class WasteplanIRApiClient:
-    """IR API Client."""
+    """WasteplanIRApiClient API Client."""
 
     def __init__(
         self,
         address: str,
         session: aiohttp.ClientSession,
     ) -> None:
+        """Initialize with address and session."""
         self._address = address
         self._session = session
 

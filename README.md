@@ -25,3 +25,7 @@ Wasteplan component for [Innherred Renovasjon](https://innherredrenovasjon.no/).
 [hacs]: https://github.com/hacs/integration
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Thord%20Setsaas%20%40thordy-blue.svg
 
+[wasteplan_trv]: https://github.com/jonkristian/wasteplan_trv/
+[jonkristian]: https://github.com/jonkristian
+[integration_blueprint]: https://github.com/ludeeus/integration_blueprint
+[ludeeus]: https://github.com/ludeeus/
