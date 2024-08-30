@@ -10,3 +10,74 @@ logger:
   default: info
   logs:
     custom_components.wasteplan_ir: debug
+
+template:
+  - trigger:
+      - platform: time_pattern
+        hours: "/1"
+    action:
+      - service: calendar.get_events
+        target:
+          entity_id: calendar.waste # Replace with your calendar name
+        data:
+          duration:
+            days: 60
+        response_variable: tommeplan
+      - variables:
+          all_events: "{{ tommeplan['calendar.waste'].events }}" # Replace with your calendar name
+          matavfall: "{{ all_events | selectattr('summary', 'search', 'Matavfall', true) | list }}"
+          restavfall: "{{ all_events | selectattr('summary', 'search', 'Restavfall', true) | list }}"
+          pappogpapir: "{{ all_events | selectattr('summary', 'search', 'Papp/papir', true) | list }}"
+          plastemballasje: "{{ all_events | selectattr('summary', 'search', 'Plastemballasje', true) | list }}"
+    sensor:
+      - name: Matavfall Henting
+        unique_id: tommeplan_matavfall
+        icon: mdi:trash-can-outline
+        state: |
+          {{ matavfall | count() }}
+        attributes:
+          scheduled_events: |
+            {{ matavfall }}
+          next_collection_date: |
+            {{ (matavfall | first).start }}
+          countdown: |
+            {{ int((as_timestamp((matavfall | first).start) - as_timestamp(today_at('00:00')))/86400)}}
+
+      - name: Restavfall Henting
+        unique_id: tommeplan_restavfall
+        icon: mdi:trash-can-outline
+        state: |
+          {{ restavfall | count() }}
+        attributes:
+          scheduled_events: |
+            {{ restavfall }}
+          next_collection_date: |
+            {{ (restavfall | first).start }}
+          countdown: |
+            {{ int((as_timestamp((restavfall | first).start) - as_timestamp(today_at('00:00')))/86400)}}
+
+      - name: Papp og Papir Henting
+        unique_id: tommeplan_pappogpapir
+        icon: mdi:trash-can-outline
+        state: |
+          {{ pappogpapir | count() }}
+        attributes:
+          scheduled_events: |
+            {{ pappogpapir }}
+          next_collection_date: |
+            {{ (pappogpapir | first).start }}
+          countdown: |
+            {{ int((as_timestamp((pappogpapir | first).start) - as_timestamp(today_at('00:00')))/86400)}}
+
+      - name: Plastemballasje Henting
+        unique_id: tommeplan_plastemballasje
+        icon: mdi:trash-can-outline
+        state: |
+          {{ plastemballasje | count() }}
+        attributes:
+          scheduled_events: |
+            {{ plastemballasje }}
+          next_collection_date: |
+            {{ (plastemballasje | first).start }}
+          countdown: |
+            {{ int((as_timestamp((plastemballasje | first).start) - as_timestamp(today_at('00:00')))/86400)}}

@@ -69,6 +69,7 @@ class WasteplanIRCalendar(WasteplanIREntity, CalendarEntity):
 
                 event = CalendarEvent(
                     summary=waste_summary,
+                    description=fraction_details["frequency_human"],
                     start=waste_pickup,
                     end=waste_pickup + timedelta(hours=8),
                 )
