@@ -1,4 +1,8 @@
-"""IR API Client."""
+"""
+WasteplanIR API Client.
+
+Full API documentation https://proaktiv.regiondata.no:9002/swagger/ui/index#/
+"""
 
 from __future__ import annotations
 
