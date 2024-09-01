@@ -45,7 +45,7 @@ template:
           plastemballasje: "{{ all_events | selectattr('summary', 'search', 'Plastemballasje', true) | list }}"
           glassogmetall: "{{ all_events | selectattr('summary', 'search', 'Glass- og metallemballasje', true) | list }}"
     sensor:
-      - name: matavfall Henting
+      - name: Matavfall Henting
         unique_id: tommeplan_matavfall
         icon: mdi:trash-can-outline
         state: |
