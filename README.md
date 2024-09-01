@@ -43,6 +43,7 @@ template:
           restavfall: "{{ all_events | selectattr('summary', 'search', 'Restavfall', true) | list }}"
           pappogpapir: "{{ all_events | selectattr('summary', 'search', 'Papp/papir', true) | list }}"
           plastemballasje: "{{ all_events | selectattr('summary', 'search', 'Plastemballasje', true) | list }}"
+          glassogmetall: "{{ all_events | selectattr('summary', 'search', 'Glass- og metallemballasje', true) | list }}"
     sensor:
       - name: atavfall Henting
         unique_id: tommeplan_matavfall
@@ -95,6 +96,19 @@ template:
             {{ (plastemballasje | first).start }}
           countdown: |
             {{ int((as_timestamp((plastemballasje | first).start) - as_timestamp(today_at('00:00')))/86400)}}
+
+    - name: Glass og Metall Henting
+      unique_id: tommeplan_glassogmetall
+      icon: mdi:trash-can-outline
+      state: |
+        {{ glassogmetall | count() }}
+      attributes:
+        scheduled_events: |
+          {{ glassogmetall }}
+        next_collection_date: |
+          {{ (glassogmetall | first).start }}
+        countdown: |
+          {{ int((as_timestamp((glassogmetall | first).start) - as_timestamp(today_at('00:00')))/86400)}}
 ```
 
 This will give you sensors like the following, which again can be used to display the countdown in the frontend via a template sensor like
