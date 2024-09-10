@@ -9,9 +9,10 @@ Wasteplan component for [Innherred Renovasjon](https://innherredrenovasjon.no/).
 ## Installation
 
 1. Install [HACS](http://hacs.xyz/)
-2. Search for and install the "Wasteplan IR" integration
-3. Install and restart Home Assistant
-4. Install Wasteplan IR from the integrations screen.
+2. Add Custom Repository "github.com/thordy/wasteplan_ir" as Integration
+4. Search for and install the "Wasteplan IR" integration
+5. Restart Home Assistant
+6. Install Wasteplan IR from the integrations screen.
 
 ## Attributions
 - Code is heavily based on the great [wasteplan_trv] repository by [jonkristian] 🙌
